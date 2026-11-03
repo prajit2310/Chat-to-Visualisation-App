@@ -1,0 +1,403 @@
+.visualization-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.canvas-wrapper {
+  flex: 1;
+  background: white;
+  padding: 16px;
+  overflow: auto; /* Enable scrolling when content overflows */
+  position: relative;
+  scroll-behavior: smooth;
+  min-height: 0; /* Allow shrinking in flex container */
+  /* Remove flex centering that can interfere with scrolling */
+  /* The canvas will be positioned naturally, scrollbars appear when needed */
+}
+
+/* Custom scrollbar styling for better UX */
+.canvas-wrapper::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.canvas-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.canvas-wrapper::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.canvas-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+.visualization-canvas {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: white;
+  display: block;
+  flex-shrink: 0; /* Prevent canvas from shrinking */
+  /* Ensure minimum size to trigger scrolling when needed */
+  min-width: 800px;
+  min-height: 400px;
+  /* Center the canvas when there's extra space, but allow scrolling when container is smaller */
+  margin: 0 auto;
+  /* Add some margin when scrolling is needed */
+  box-sizing: border-box;
+}
+
+.visualization-controls {
+  padding: 16px 20px;
+  background: #ffffff;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.play-btn {
+  background: #3498db;
+  color: white;
+}
+
+.play-btn:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+}
+
+.play-btn.playing {
+  background: #e74c3c;
+}
+
+.play-btn.playing:hover {
+  background: #c0392b;
+}
+
+.reset-btn {
+  background: #95a5a6;
+  color: white;
+}
+
+.reset-btn:hover {
+  background: #7f8c8d;
+  transform: translateY(-1px);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  transition: width 0.1s ease;
+  border-radius: 3px;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #7f8c8d;
+  font-weight: 500;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Placeholder styles */
+.visualization-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #7f8c8d;
+  background: white;
+}
+
+.placeholder-content {
+  max-width: 400px;
+  padding: 40px;
+}
+
+.placeholder-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.placeholder-content p {
+  font-size: 18px;
+  margin: 0 0 24px 0;
+  color: #2c3e50;
+}
+
+.example-questions {
+  text-align: left;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.example-questions p {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: #2c3e50;
+}
+
+.example-questions ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.example-questions li {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.spinner-circle {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-details {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.error-details {
+  background: #fdf2f2;
+  border: 1px solid #f5c6c6;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.error-details code {
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #e74c3c;
+  display: block;
+  margin: 8px 0;
+  word-wrap: break-word;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .canvas-wrapper {
+    padding: 10px;
+  }
+  
+  .visualization-canvas {
+    /* On mobile, allow the canvas to be smaller but maintain scrolling when needed */
+    min-width: 320px; /* Smaller minimum for mobile devices */
+    min-height: 240px;
+    /* Ensure horizontal scrolling is smooth on touch devices */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .visualization-controls {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .control-btn {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .progress-bar {
+    order: 3;
+    flex-basis: 100%;
+    margin: 8px 0 0 0;
+  }
+  
+  .placeholder-content {
+    padding: 20px;
+  }
+  
+  .placeholder-icon {
+    font-size: 48px;
+  }
+}
+
+/* Additional styles for ModularVisualizationCanvas */
+.performance-stats {
+  display: flex;
+  gap: 15px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  font-size: 12px;
+  color: #666;
+  margin-left: auto;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  font-family: 'Monaco', 'Menlo', monospace;
+}
+
+.engine-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  font-size: 12px;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+.status-label {
+  color: #666;
+  font-weight: 500;
+}
+
+.status-indicator {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.status-indicator.ready {
+  color: #27ae60;
+  background: rgba(39, 174, 96, 0.1);
+}
+
+.status-indicator.loading {
+  color: #f39c12;
+  background: rgba(243, 156, 18, 0.1);
+}
+
+.export-button {
+  background: #8e44ad;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.export-button:hover:not(:disabled) {
+  background: #9b59b6;
+  transform: translateY(-1px);
+}
+
+.export-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Canvas wrapper needs relative positioning for status indicator */
+.canvas-wrapper {
+  position: relative;
+}
+
+/* Fullscreen notification styles */
+.fullscreen-notification {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-width: calc(100% - 32px);
+  text-align: center;
+  user-select: none;
+}
+
+.fullscreen-notification:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Responsive adjustments for fullscreen notification */
+@media (max-width: 480px) {
+  .fullscreen-notification {
+    font-size: 11px;
+    padding: 6px 12px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+@media (max-width: 320px) {
+  .fullscreen-notification {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+}
